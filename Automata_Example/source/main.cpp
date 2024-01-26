@@ -31,7 +31,9 @@ int main()
     // std::cout << "Read cccc = " << ends_with_b.Read("cccc") << std::endl;
 
     // What happens if we call Read more than once?
-    std::cout << "Read aaab = " << ends_with_b.Read("aaaa").Read("ab") << std::endl;
+    // ends_with_b.Read("aaaa").Read("ab") -> this one is wrong
+    std::cout << "Read aaab = " << ends_with_b.Read("aaaa") << ends_with_b.Read("ab") << std::endl;
+    std::cout << "Read aaab = " << ends_with_b.Read("aaab") << ends_with_b.Read("ab") << std::endl;
     } catch (std::logic_error &e) {
         std::cerr << "Logic error: " << e.what() << std::endl;
     } catch (std::exception &e) {

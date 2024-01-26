@@ -12,6 +12,9 @@ Automaton::Automaton(map<char, int> A, vector<vector<int>> M, vector<int> S) : a
 
 bool Automaton::Read(string word)
 {
+    // reset state if we "Read" twice
+    state = 0;
+
     for (auto &c : word)
     {
         // check if char available in map
@@ -28,6 +31,9 @@ bool Automaton::Read(string word)
         //it->first gives the key, it->second gives the value
         int j = it->second;
         state = transition_matrix[state][j];
+
+        // Question: What happens if we call Read more than once?
+        // Answer: need to reset the state to '0' explanation in week 3 - more than once.jpg
     }
 
     return std::find(accepting_states.begin(), accepting_states.end(), state) != accepting_states.end();
