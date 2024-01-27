@@ -2,6 +2,8 @@
 
 [COMP0210 - Week 3](https://hackmd.io/@comp0210-cpp-redesign/H12IMwb7a)
 
+[UCL Reading Week 3](https://github-pages.ucl.ac.uk/research-computing-with-cpp/03cpp2/)
+
 1. cmake -B build
 - configuration
 2. cmake --build build
