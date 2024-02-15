@@ -41,7 +41,7 @@ Automaton::Automaton(map<char, int> A, vector<vector<int>> M, vector<int> S) : a
     }
 }
 
-string strip(const map<char, int> &A, string s)
+string Automaton::strip(const map<char, int> &A, string s)
 {
     auto new_end = std::remove_if(s.begin(), s.end(), [&A](char a){return A.find(a) == A.end();});
     s.erase(new_end, s.end());
