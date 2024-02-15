@@ -1,13 +1,51 @@
 #include "automaton.h"
 
-Automaton::Automaton(map<char, int> A, vector<vector<int>> M, vector<int> S) : alphabet(A), transition_matrix(M), accepting_states(S) {
-    if (S.empty()) {
+Automaton::Automaton(map<char, int> A, vector<vector<int>> M, vector<int> S) : alphabet(A), transition_matrix(M), accepting_states(S)
+{
+    if (S.empty())
+    {
         throw std::range_error("Accepting states should be at least 1");
     }
-    if (A.empty()) {
+    if (A.empty())
+    {
         throw std::range_error("Alphabet nodes should be at least 1");
     }
     // check the size of matrix A
+    uint num_states = transition_matrix.size();
+    for (auto &row : transition_matrix)
+    {
+        if (row.size() != A.size())
+        {
+            throw std::logic_error("Each row in transition matrix must have one entry per character.");
+        }
+        for (auto &element : row)
+        {
+            if (element > num_states)
+            {
+                throw std::logic_error("Element found in transition matrix pointing to non existent state.");
+            }
+        }
+    }
+
+    // Check accepting states
+    for (auto s : accepting_states) 
+    {
+        if (s > num_states)
+        {
+            throw std::logic_error("Invalid accepting state found.");
+        }
+    }
+    if (accepting_states.size() > num_states)
+    {
+        throw std::logic_error("Size of accepting state vector should be less than or equal to the number states.");
+    }
+}
+
+string strip(const map<char, int> &A, string s)
+{
+    auto new_end = std::remove_if(s.begin(), s.end(), [&A](char a){return A.find(a) == A.end();});
+    s.erase(new_end, s.end());
+    return s;
 }
 
 bool Automaton::Read(string word)
@@ -17,19 +55,20 @@ bool Automaton::Read(string word)
 
     for (auto &c : word)
     {
-        // check if char available in map
-        if (alphabet.find(c) == alphabet.end()) {
-            throw std::logic_error("cannot find character in alphabet map");
-        }
-
         // a map's find method returns an iterator to the key-value pair for the given key
-        // iterators have syntax similar to pointers: 
+        // iterators have syntax similar to pointers:
         // (*it) gives the key-value pair
         // -> can be used to access methods of the key value pair
         auto it = alphabet.find(c);
 
-        //it->first gives the key, it->second gives the value
-        int j = it->second;
+        // check if char available in map
+        if (it == alphabet.end())
+        {
+            throw std::domain_error("Invalid character found in input string. You can try: " + strip(alphabet, word));
+        }
+
+        // it->first gives the key, it->second gives the value
+        uint j = it->second;
         state = transition_matrix[state][j];
 
         // Question: What happens if we call Read more than once?

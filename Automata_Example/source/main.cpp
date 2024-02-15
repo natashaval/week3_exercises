@@ -23,6 +23,9 @@ int main()
     // Question: if we create try-catch in Automaton constructor, we'll get ‘ends_with_b’ was not declared in this scope in the second try-catch
     // Ans: No need to try catch here -> because the expected behaviour is to exit the program anyway; we can't continue
 
+    // SOLUTION: why instantiate constructor above try/catch
+    // In this case it's okay to call the constructor without a try/catch block because we don't want to continue the program without an Automaton created. If an exception is thrown by the constructor, then when it propagates to the top level and is not caught it will print the error message and terminate the program as desired.
+
     try {
     std::cout << "Read abab = " << ends_with_b.Read("abab") << std::endl;
     std::cout << "Read aaba = " << ends_with_b.Read("aaba") << std::endl;
